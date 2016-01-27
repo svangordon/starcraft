@@ -9,9 +9,12 @@ ul {
   margin: 0px;
 }
 table {
+  width: 600px;
   margin-left: 40px;
+  margin-top: 10px;
 }
 table tr {
+  width: 124px;
   line-height: 15px;
   border: 1px solid #000;
 }
@@ -25,6 +28,25 @@ table th {
   padding-bottom: 50px;
   width: 675px;
 }
+.buttons {
+  display: inline-block;
+  width: 100px;
+}
+.buttons input {
+  display: inline-block;
+}
 .right-buttons {
   float: right;
+}
+.page-numbers {
+  display: inline-block;
+  width: 170px;
+}
+.page-numbers a {
+  margin: 10px;
+}
+.stat-box {
+  float: right;
+  width: 500px;
+  background-color: #95a5a6;
 }

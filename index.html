@@ -10,28 +10,66 @@
 
 </head>
 <body ng-controller="rankingsController">
+	<div class="stat-box" ng-controller="statsController">
+		<h2>Statistics</h2>
+		<h3>Total Players: {{data.length}}</h3>
+		<h3>Games Played: {{rankings.totalGames}}</h3>
+		<h3>Races:</h3>
+		<ul ng-repeat="race in races">
+			<li>{{race.name}}</li>
+			<ul>
+				<li>Games Played : {{race.played}}</li>
+				<li>Wins: {{race.wins}}</li>
+				<li>Win Percent : {{race.winPercentage}}</li>
+			</ul>
+		</ul>
+	</div>
 	<div class="main-container">
 		<h1>StarCraft Rankings</h1>
 		<h3>Construct Additional Pylons</h3>
 		<div ng-controller="tableController">
-			<table>
-				<tr>
-					<th ng-repeat="col in cols" ng-bind="col"></th>
-				</tr>
-				<tr ng-repeat="row in data | limitTo : 20 : activePlayer">
-					<td ng-repeat="datum in row" ng-bind="datum"></td>
-				</tr>
-				<div class="left-buttons">
+			<div class="left-buttons buttons">
 					<input type="button" value="first" ng-click="goToFirstPage()"></input>
 					<input type="button" value="prev" ng-click="decrementPage()"></input>
-				</div>
-				<div class="right-buttons">
+			</div>
+			<div class="page-numbers">
+				<a ng-repeat="page in getNumber(pagesLength(table.rowsPerPage,filteredResults.length)) track by $index" ng-bind="$index + 1" ng-click="setPageNumber($index)"></a>
+			</div>
+			<select ng-model="filters.race">
+				<option disabled="true">Race</option>
+				<option value="">All</option>
+				<option value="Zerg">Zerg</option>
+				<option value="Protoss">Protoss</option>
+				<option value="Terran">Terran</option>
+			</select>
+			<select ng-model="filters.region">
+				<option disabled="true">Country</option>
+				<option value="">All</option>
+				<option value="America">America</option>
+				<option value="Europe">Europe</option>
+				<option value="Korea">Korea</option>
+			</select>
+			<select ng-model="table.rowsPerPage">
+				<option disabled="true">Rows</option>
+				<option value="20">20</option>
+				<option value="40">40</option>
+				<option value="60">60</option>
+				<option value="80">80</option>
+			</select>
+			<div class="right-buttons buttons">
 					<input type="button" class="button-right"value="next" ng-click="incrementPage()"></input>
 					<input type="button" value="last" ng-click="goToLastPage()"></input>
-				</div>
+			</div>
+			<table>
+				<tr>
+					<th ng-repeat="col in cols" ng-bind="col" ng-click="setOrder(col)"></th>
+				</tr>
+				<tr ng-repeat="row in filteredResults = (data | filter:filters.race:row.race | filter: filters.region : row.region |orderBy: table.order.by:table.order.reverse) | limitTo : table.rowsPerPage : table.activePlayer">
+					<td ng-repeat="datum in row" ng-bind="datum"></td>
+				</tr>				
 			</table>
 		</div>
-	</div>
 
+	</div>
 </body>
 </html>
